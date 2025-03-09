@@ -1,7 +1,7 @@
 const pool = require("../config/db");
 const sendEmail = require("../utils/emailService");
 
-// ✅ Book an Appointment with Additional Medical Details and File Upload
+//  Book an Appointment with Additional Medical Details and File Upload
 exports.bookAppointment = (req, res) => {
     const { doctor_id, date_time, medical_code, description } = req.body;
     const patient_id = req.user.id;
@@ -63,7 +63,7 @@ exports.bookAppointment = (req, res) => {
     });
 };
 
-// ✅ Get Appointments for a User (Doctor or Patient)
+// Get Appointments for a User (Doctor or Patient)
 exports.getAppointments = (req, res) => {
     const { role, id } = req.user;
     let query = "";
@@ -99,7 +99,7 @@ exports.getAppointments = (req, res) => {
 };
 
 
-// ✅ Doctors Can Update Treatment (Follow-up)
+// Doctors Can Update Treatment (Follow-up)
 exports.updateTreatment = (req, res) => {
     const { id } = req.params; // Appointment ID
     const { treatment } = req.body;
@@ -141,7 +141,7 @@ exports.updateTreatment = (req, res) => {
 };
 
 
-// ✅ Cancel Appointment with Email Notification
+// Cancel Appointment with Email Notification
 exports.cancelAppointment = (req, res) => {
     const { id } = req.params;
     const query = `

@@ -1,6 +1,6 @@
 const pool = require("../config/db");
 
-// ✅ Fetch All Users (Admins Only)
+// Fetch All Users (Admins Only)
 exports.getAllUsers = (req, res) => {
     pool.query("SELECT id, name, email, role FROM users", (err, results) => {
         if (err) {
@@ -11,7 +11,7 @@ exports.getAllUsers = (req, res) => {
     });
 };
 
-// ✅ Fetch All Appointments (Admins Only)
+// Fetch All Appointments (Admins Only)
 exports.getAllAppointments = (req, res) => {
     const query = `
         SELECT a.id, a.date_time, a.medical_code, a.description, a.status, 
