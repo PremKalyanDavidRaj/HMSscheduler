@@ -51,7 +51,7 @@ function RegisterPage() {
                         required 
                     />
 
-                    {/* ✅ Role Selection Dropdown */}
+                    {/* Role Selection Dropdown */}
                     <Select
                         name="role"
                         value={user.role}
