@@ -12,7 +12,7 @@ function AdminDashboard() {
     fetchAppointments();
   }, []);
 
-  // ✅ Fetch All Users
+  // Fetch All Users
   const fetchUsers = () => {
     axios.get("http://localhost:5001/api/admin/users", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
@@ -27,7 +27,7 @@ function AdminDashboard() {
     });
   };
 
-  // ✅ Fetch All Appointments
+  // Fetch All Appointments
   const fetchAppointments = () => {
     axios.get("http://localhost:5001/api/admin/appointments", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
@@ -49,7 +49,7 @@ function AdminDashboard() {
           Admin Dashboard
         </Typography>
 
-        {/* ✅ All Users Table */}
+        {/*  All Users Table */}
         <Typography variant="h5" gutterBottom>All Users</Typography>
         <TableContainer>
           <Table>
@@ -72,7 +72,7 @@ function AdminDashboard() {
           </Table>
         </TableContainer>
 
-        {/* ✅ All Appointments Table */}
+        {/*  All Appointments Table */}
         <Typography variant="h5" gutterBottom style={{ marginTop: "30px" }}>
           All Appointments
         </Typography>
