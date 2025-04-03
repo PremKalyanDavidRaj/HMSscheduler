@@ -2,14 +2,26 @@ const pool = require("../config/db");
 const sendEmail = require("../utils/emailService");
 
 //  Book an Appointment with Additional Medical Details and File Upload
+//  Book an Appointment with Additional Medical Details and File Upload
 exports.bookAppointment = (req, res) => {
     const { doctor_id, date_time, medical_code, description } = req.body;
     const patient_id = req.user.id;
     const file_path = req.file ? req.file.path : null;
-    
-    const formattedDateTime = new Date(date_time).toISOString().slice(0, 19).replace("T", " ");
 
-    // Check if an appointment already exists at the same time for the doctor
+    console.log("Received date_time from frontend:", date_time);
+
+    //  Check if date_time is valid
+    const parsedDate = new Date(date_time);
+    if (!date_time || isNaN(parsedDate.getTime())) {
+        console.error("Invalid date_time:", date_time);
+        return res.status(400).json({ message: "Invalid or missing date_time" });
+    }
+
+    //  Format the date to MySQL DATETIME format (YYYY-MM-DD HH:MM:SS)
+    const formattedDateTime = parsedDate.toISOString().slice(0, 19).replace("T", " ");
+    console.log("Formatted DateTime:", formattedDateTime);
+
+    //  Check if an appointment already exists at the same time for the doctor
     const checkQuery = `SELECT COUNT(*) AS count FROM appointments WHERE doctor_id = ? AND date_time = ?`;
 
     pool.query(checkQuery, [doctor_id, formattedDateTime], (err, result) => {
@@ -22,7 +34,7 @@ exports.bookAppointment = (req, res) => {
             return res.status(400).json({ message: "Appointment time is already booked. Please choose a different time." });
         }
 
-        // Insert appointment into database
+        //  Insert appointment
         const insertQuery = `
             INSERT INTO appointments (patient_id, doctor_id, date_time, status, medical_code, description, file_path)
             VALUES (?, ?, ?, 'scheduled', ?, ?, ?)
@@ -34,7 +46,7 @@ exports.bookAppointment = (req, res) => {
                 return res.status(500).json({ message: "Error booking appointment" });
             }
 
-            // Fetch user and doctor emails for notifications
+            //  Fetch emails
             const emailQuery = `
                 SELECT p.email AS patient_email, p.name AS patient_name, d.email AS doctor_email 
                 FROM users p
@@ -47,21 +59,23 @@ exports.bookAppointment = (req, res) => {
                     console.error("Error fetching emails:", err);
                     return res.status(500).json({ message: "Error booking appointment" });
                 }
+
                 if (results.length === 0) {
                     return res.status(404).json({ message: "User emails not found" });
                 }
 
                 const { patient_email, patient_name, doctor_email } = results[0];
 
-                // Send email notifications
-                sendEmail(patient_email, "Appointment Confirmation", `Hello ${patient_name}, Your appointment is booked on ${date_time}.`);
-                sendEmail(doctor_email, "New Appointment Assigned", `You have a new appointment with ${patient_name} on ${date_time}.`);
+                // Send emails
+                sendEmail(patient_email, "Appointment Confirmation", `Hello ${patient_name}, Your appointment is booked on ${formattedDateTime}.`);
+                sendEmail(doctor_email, "New Appointment Assigned", `You have a new appointment with ${patient_name} on ${formattedDateTime}.`);
 
                 return res.status(201).json({ message: "Appointment booked successfully, email sent" });
             });
         });
     });
 };
+
 
 // Get Appointments for a User (Doctor or Patient)
 exports.getAppointments = (req, res) => {
@@ -178,28 +192,31 @@ exports.cancelAppointment = (req, res) => {
 };
 
 exports.deleteAppointment = (req, res) => {
-    const { id } = req.params; // Appointment ID
-    const doctor_id = req.user.id; // Doctor's ID from authentication token
+    const { id } = req.params;
+    const { id: userId, role } = req.user;
 
-    console.log(`Delete Request for Appointment ID: ${id} by Doctor ID: ${doctor_id}`);
+    // Build role-based query
+    let checkQuery = "";
+    if (role === "doctor") {
+        checkQuery = `SELECT * FROM appointments WHERE id = ? AND doctor_id = ?`;
+    } else if (role === "patient") {
+        checkQuery = `SELECT * FROM appointments WHERE id = ? AND patient_id = ?`;
+    } else {
+        return res.status(403).json({ message: "Unauthorized role" });
+    }
 
-    // Check if the doctor owns this appointment
-    const checkQuery = `SELECT * FROM appointments WHERE id = ? AND doctor_id = ?`;
-
-    pool.query(checkQuery, [id, doctor_id], (err, results) => {
+    pool.query(checkQuery, [id, userId], (err, results) => {
         if (err) {
             console.error("Error checking appointment ownership:", err);
             return res.status(500).json({ message: "Error checking appointment ownership" });
         }
 
         if (results.length === 0) {
-            console.log("Unauthorized delete attempt: Doctor does not own this appointment.");
+            console.log("Unauthorized delete attempt: User does not own this appointment.");
             return res.status(403).json({ message: "Unauthorized: You can only delete your own appointments." });
         }
 
-        // Proceed to delete the appointment if it belongs to the doctor
         const deleteQuery = `DELETE FROM appointments WHERE id = ?`;
-
         pool.query(deleteQuery, [id], (err, result) => {
             if (err) {
                 console.error("Error deleting appointment:", err);
@@ -211,3 +228,5 @@ exports.deleteAppointment = (req, res) => {
         });
     });
 };
+
+
