@@ -30,7 +30,7 @@ function DoctorDashboard() {
     //  Open Treatment Dialog
     const handleOpen = (appointment) => {
         setSelectedAppointment(appointment);
-        setTreatment(appointment.treatment || ""); // Pre-fill if treatment exists
+        setTreatment(appointment.treatment || ""); 
         setOpen(true);
     };
 
@@ -99,6 +99,7 @@ return (
                                 <TableCell>Description</TableCell>
                                 <TableCell>Status</TableCell>
                                 <TableCell>Treatment</TableCell>
+                                <TableCell>Uploaded File</TableCell>
                                 <TableCell>Actions</TableCell>
                             </TableRow>
                         </TableHead>
@@ -111,6 +112,28 @@ return (
                                     <TableCell>{appt.description}</TableCell>
                                     <TableCell>{appt.status}</TableCell>
                                     <TableCell>{appt.treatment || "No treatment yet"}</TableCell>
+                                    <TableCell>
+  {appt.file_path ? (
+    <>
+      {/\.(jpg|jpeg|png|gif)$/i.test(appt.file_path) ? (
+        <a href={`http://localhost:5001/${appt.file_path}`} target="_blank" rel="noopener noreferrer">
+          <img 
+            src={`http://localhost:5001/${appt.file_path}`} 
+            alt="Uploaded file" 
+            style={{ maxWidth: "100px", maxHeight: "100px" }} 
+          />
+        </a>
+      ) : (
+        <a href={`http://localhost:5001/${appt.file_path}`} target="_blank" rel="noopener noreferrer">
+          View File
+        </a>
+      )}
+    </>
+  ) : (
+    "No file"
+  )}
+</TableCell>
+
                                     <TableCell>
                                         <Button
                                             variant="contained"
