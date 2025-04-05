@@ -20,7 +20,7 @@ function AppointmentsPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Sending date_time to backend:", dateTime); // 🛠️ Debug
+    console.log("Sending date_time to backend:", dateTime); 
 
     if (!dateTime) {
       alert("Please select a valid date and time");
@@ -29,7 +29,7 @@ function AppointmentsPage() {
 
     const formData = new FormData();
     formData.append("doctor_id", doctorId);
-    formData.append("date_time", dateTime); // 🧠 Should be a proper ISO format
+    formData.append("date_time", dateTime); 
     formData.append("medical_code", medicalCode);
     formData.append("description", description);
     if (file) {

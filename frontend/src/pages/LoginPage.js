@@ -22,7 +22,7 @@ function LoginPage() {
             } else if (userRole === "admin") {
                 navigate("/admin-dashboard");
             } else if (userRole === "patient") {
-                navigate("/patient-dashboard"); // ✅ Redirect patients to their dashboard
+                navigate("/patient-dashboard"); //  Redirect patients to their dashboard
             } else {
                 navigate("/"); // Default homepage
             }

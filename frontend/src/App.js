@@ -7,7 +7,7 @@ import LoginPage from "./pages/LoginPage";
 import AppointmentsPage from "./pages/AppointmentsPage"; // for patients
 import DoctorDashboard from "./pages/DoctorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
-import PatientDashboard from "./pages/PatientDashboard"; // ✅ Import the new Patient Dashboard
+import PatientDashboard from "./pages/PatientDashboard"; //  Import the new Patient Dashboard
 
 function App() {
     return (

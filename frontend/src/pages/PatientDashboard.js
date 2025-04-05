@@ -62,7 +62,7 @@ function PatientDashboard() {
                       <TableCell>Description</TableCell>
                       <TableCell>Status</TableCell>
                       <TableCell>Treatment / Follow-Up</TableCell>
-                      <TableCell>Actions</TableCell> {/* 🆕 Actions column */}
+                      <TableCell>Actions</TableCell> {}
                     </TableRow>
                   </TableHead>
                   <TableBody>
