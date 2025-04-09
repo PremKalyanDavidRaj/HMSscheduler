@@ -15,7 +15,7 @@ function LoginPage() {
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user", JSON.stringify(res.data.user));
             
-            // ✅ Redirect based on the user's role
+            //  Redirect based on the user's role
             const userRole = res.data.user.role;
             if (userRole === "doctor") {
                 navigate("/doctor-dashboard");
