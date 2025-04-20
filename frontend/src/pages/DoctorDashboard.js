@@ -45,7 +45,7 @@ function DoctorDashboard() {
         if (!selectedAppointment) return;
     
         axios.put(`http://localhost:5001/api/appointments/update-treatment/${selectedAppointment.id}`, 
-            { treatment: treatment.trim() },  // ✅ Ensure no empty values
+            { treatment: treatment.trim() }, 
             { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
         )
         .then((res) => {
@@ -112,7 +112,7 @@ return (
                                     <TableCell>{appt.description}</TableCell>
                                     <TableCell>{appt.status}</TableCell>
                                     <TableCell>{appt.treatment || "No treatment yet"}</TableCell>
-                                    <TableCell>
+                                <TableCell>
   {appt.file_path ? (
     <>
       {/\.(jpg|jpeg|png|gif)$/i.test(appt.file_path) ? (

@@ -24,6 +24,7 @@ function PatientDashboard() {
         });
     };
 
+    
     const handleDelete = (id) => {
         if (window.confirm("Are you sure you want to delete this appointment?")) {
           axios
