@@ -28,6 +28,7 @@ const NavBar = () => {
         )}
         {role === "patient" && (
           <>
+
             <Button color="inherit" component={Link} to="/appointments">
               Book Appointment
             </Button>
@@ -45,12 +46,16 @@ const NavBar = () => {
         {/* Show Register/Login if No User is Logged In */}
         {!role ? (
           <>
+          <Button color="inherit" component={Link} to="/medical-codes">
+  Medical Codes
+</Button>
             <Button color="inherit" component={Link} to="/register">
               Register
             </Button>
             <Button color="inherit" component={Link} to="/login">
               Login
             </Button>
+
           </>
         ) : (
           // Show Logout Button if User is Logged In

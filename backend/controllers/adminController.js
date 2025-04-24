@@ -1,6 +1,6 @@
 const pool = require("../config/db");
 
-// Fetch All Users (Admins Only)
+// Fetch All Users
 exports.getAllUsers = (req, res) => {
     pool.query("SELECT id, name, email, role FROM users", (err, results) => {
         if (err) {
@@ -11,7 +11,7 @@ exports.getAllUsers = (req, res) => {
     });
 };
 
-// Fetch All Appointments (Admins Only)
+// Fetch All Appointments
 exports.getAllAppointments = (req, res) => {
     const query = `
         SELECT a.id, a.date_time, a.medical_code, a.description, a.status, 
@@ -27,6 +27,30 @@ exports.getAllAppointments = (req, res) => {
             console.error("Error fetching appointments:", err);
             return res.status(500).json({ message: "Error fetching appointments" });
         }
+        res.status(200).json(results);
+    });
+};
+//  Get Patients by Medical Code (with query param ?code=A00)
+exports.getPatientsByMedicalCode = (req, res) => {
+    const { code } = req.query;
+
+    if (!code) {
+        return res.status(400).json({ message: "Medical code is required" });
+    }
+
+    const query = `
+        SELECT u.name AS patient_name, u.email AS patient_email, a.medical_code
+        FROM appointments a
+        JOIN users u ON a.patient_id = u.id
+        WHERE TRIM(a.medical_code) = ?
+    `;
+
+    pool.query(query, [code], (err, results) => {
+        if (err) {
+            console.error("Error fetching grouped patients:", err);
+            return res.status(500).json({ message: "Error fetching grouped patients" });
+        }
+
         res.status(200).json(results);
     });
 };

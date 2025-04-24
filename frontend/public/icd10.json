@@ -1,0 +1,13 @@
+[
+    { "code": "A00", "description": "Cholera" },
+    { "code": "B01", "description": "Varicella [chickenpox]" },
+    { "code": "C22", "description": "Liver cell carcinoma" },
+    { "code": "D50", "description": "Iron deficiency anemia" },
+    { "code": "E11", "description": "Type 2 diabetes mellitus" },
+    { "code": "F32", "description": "Depressive episode" },
+    { "code": "G40", "description": "Epilepsy" },
+    { "code": "H10", "description": "Conjunctivitis" },
+    { "code": "I10", "description": "Essential (primary) hypertension" },
+    { "code": "J45", "description": "Asthma" }
+  ]
+  

@@ -15,19 +15,27 @@ const userRoutes = require("./routes/userRoutes");
 const appointmentRoutes = require("./routes/appointmentRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const adminRoutes = require("./routes/adminRoutes"); 
+const medicalCodeRoutes = require("./routes/medicalCodeRoutes");
+
 
 // Mount routes (No Duplicates)
 app.use("/api/users", userRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/admin", adminRoutes); 
+app.use("/api/admin", require("./routes/adminRoutes")); 
+app.use("/api/admin", adminRoutes); 
+app.use("/api/medical-code-details", medicalCodeRoutes);
+
+
+
 
 //  Root Route
 app.get("/", (req, res) => {
   res.send("Hospital Management System API is running...");
 });
 
-// ✅ Start Server
+//  Start Server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
